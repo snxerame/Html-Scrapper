@@ -1,7 +1,7 @@
 {
   "dependencies": {
-    "puppeteer-extra": "^4.2.1",
-    "puppeteer-extra-plugin-stealth": "^2.11.1",
-    "puppeteer": "^21.11.0"
+    "puppeteer-extra": "4.2.1",
+    "puppeteer-extra-plugin-stealth": "2.11.1",
+    "puppeteer": "21.11.0"
   }
 }
