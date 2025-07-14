@@ -1,5 +1,4 @@
-const chromium = require('chrome-aws-lambda');
-const puppeteer = require('puppeteer-core');
+const axios = require('axios');
 
 module.exports = async (req, res) => {
   const { url } = req.query;
@@ -7,37 +6,17 @@ module.exports = async (req, res) => {
     return res.status(400).json({ error: 'Missing url query parameter' });
   }
 
-  let browser = null;
   try {
-    browser = await puppeteer.launch({
-      args: chromium.args,
-      defaultViewport: chromium.defaultViewport,
-      executablePath: await chromium.executablePath,
-      headless: chromium.headless,
+    // Fetch the HTML with a browser-like user-agent
+    const response = await axios.get(url, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        'Accept-Language': 'en-US,en;q=0.9'
+      },
+      timeout: 15000 // 15 seconds timeout
     });
-
-    const page = await browser.newPage();
-
-    await page.setUserAgent(
-      'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36'
-    );
-    await page.setExtraHTTPHeaders({
-      'Accept-Language': 'en-US,en;q=0.9',
-    });
-
-    await page.evaluateOnNewDocument(() => {
-      Object.defineProperty(navigator, 'webdriver', { get: () => false });
-    });
-
-    await page.goto(url, { waitUntil: 'networkidle2', timeout: 30000 });
-
-    const html = await page.content();
-    res.status(200).send(html);
+    res.status(200).send(response.data);
   } catch (error) {
     res.status(500).json({ error: error.message });
-  } finally {
-    if (browser !== null) {
-      await browser.close();
-    }
   }
 };
