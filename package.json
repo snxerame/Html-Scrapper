@@ -1,5 +1,19 @@
-"dependencies": {
-  "puppeteer": "21.11.0",
-  "puppeteer-extra": "3.3.6",
-  "puppeteer-extra-plugin-stealth": "2.11.2"
+{
+  "name": "html-scrapper",
+  "version": "1.0.0",
+  "description": "A Vercel serverless API to fetch HTML using Puppeteer.",
+  "main": "api/fetch-html.js",
+  "scripts": {
+    "dev": "vercel dev",
+    "start": "vercel dev"
+  },
+  "engines": {
+    "node": "20.x"
+  },
+  "dependencies": {
+    "puppeteer": "21.11.0",
+    "puppeteer-extra": "3.3.6",
+    "puppeteer-extra-plugin-stealth": "2.11.2"
+  }
 }
+
